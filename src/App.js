@@ -34,7 +34,10 @@ class App extends Component {
         const timesReported = this.blocks.get(hash);
         if (timesReported > 0) this.blocks.set(hash, timesReported + 1);
 
+        if (this.blocks.size > 5) this.blocks.clear();
+
         this.blocks.set(hash, 1);
+
         btcnet.getTxForBlock(hash, onBlockTXsReceived);
       };
       const onBlockTXsReceived = (txsInBlock) => {

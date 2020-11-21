@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFrame } from "react-three-fiber";
 const BlockUI = (props) => {
-  const [posx, setPosx] = useState(props.width * 0.08);
+  const [posx, setPosx] = useState(props.width * 0.09);
   const [posy, setPosy] = useState(props.number * 20 - 75);
   const [rotx, setRotx] = useState(0);
   const [roty, setRoty] = useState(0);
