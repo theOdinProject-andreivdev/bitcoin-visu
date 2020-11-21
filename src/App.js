@@ -65,29 +65,45 @@ class App extends Component {
       blockList.push(blockNr);
       blockNr++;
     }
+
+    var cnv = document.querySelector("canvas");
+
     return (
       <div className="App">
-        <div class="card">
-          <div class="card-body">
-            Pending transactions: {this.transactions.size}
+        <div style={{ display: "grid", height: "100%" }}>
+          <div className="card">
+            <div className="card-body">
+              Pending transactions: {this.transactions.size}
+            </div>
+            <div className="card-body">
+              Transactions in blocks: {this.transactionsInBlocks}
+            </div>
           </div>
-          <div class="card-body">
-            Transactions in blocks: {this.transactionsInBlocks}
-          </div>
+          <Canvas
+            className="canvas"
+            camera={{ fov: 50, position: [0, 0, 200] }}
+          >
+            <ambientLight />
+            <pointLight position={[10, 10, 10]} />
+
+            {txList.map((tx) => (
+              <TxUI
+                key={tx}
+                width={cnv.offsetWidth}
+                height={cnv.offsetHeight}
+              />
+            ))}
+
+            {blockList.map((blockNr) => (
+              <BlockUI
+                key={blockNr}
+                number={blockNr}
+                width={cnv.offsetWidth}
+                height={cnv.offsetHeight}
+              />
+            ))}
+          </Canvas>
         </div>
-
-        <Canvas camera={{ fov: 50, position: [0, 0, 200] }}>
-          <ambientLight />
-          <pointLight position={[10, 10, 10]} />
-
-          {txList.map((tx) => (
-            <TxUI key={tx} />
-          ))}
-
-          {blockList.map((blockNr) => (
-            <BlockUI key={blockNr} number={blockNr} />
-          ))}
-        </Canvas>
       </div>
     );
   }

@@ -2,18 +2,23 @@ import React, { useRef, useState } from "react";
 import { useFrame } from "react-three-fiber";
 
 const TxUI = (props) => {
-  const [posx, setPosx] = useState(-150);
-  const [posy, setPosy] = useState(Math.random() * 100 - 50);
+  console.log(props.width + " " + props.height);
+  const [posx, setPosx] = useState(-(props.width * 0.1));
+  const [posy, setPosy] = useState(
+    Math.random() * (props.height * 0.1) - (props.height * 0.1) / 2
+  );
   const [rotx, setRotx] = useState(0);
   const [roty, setRoty] = useState(0);
   const mesh = useRef();
 
   useFrame(() => {
+    //this is too resource heavy
     //mesh.current.position.y = mesh.current.position.y + randomNumber(-0.1, 0.1);
-    if (mesh.current.position.x < 50) {
+    if (mesh.current.position.x < props.width * 0.08) {
       mesh.current.position.x =
         mesh.current.position.x + randomNumber(0.2, 0.2);
     } else {
+      //this is too resource heavy
       //  mesh.current.position.x =
       //    mesh.current.position.x + randomNumber(-0.1, 0.1);
     }
