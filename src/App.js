@@ -44,7 +44,8 @@ class App extends Component {
         console.log("Size before block: " + this.transactions.size);
         txsInBlock.forEach((txInBlock) => {
           if (this.transactions.has(txInBlock.hash)) {
-            this.transactions.delete(txInBlock.hash);
+            this.transactions.set(txInBlock.hash, 0);
+            //this.transactions.delete(txInBlock.hash);
             this.transactionsInBlocks++;
           }
         });
@@ -61,7 +62,7 @@ class App extends Component {
     let txList = [];
     let blockList = [];
     for (let [key, value] of this.transactions) {
-      txList.push(key);
+      txList.push(value);
     }
     let blockNr = 0;
     for (let [key, value] of this.blocks) {
@@ -91,7 +92,7 @@ class App extends Component {
 
             {txList.map((tx) => (
               <TxUI
-                key={tx}
+                value={tx}
                 width={cnv.offsetWidth}
                 height={cnv.offsetHeight}
               />
