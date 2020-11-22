@@ -18,7 +18,7 @@ const BlockUI = (props) => {
       scale={[10, 10, 10]}
     >
       <boxBufferGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={"orange"} />
+      <meshLambertMaterial color={"orange"} />
     </mesh>
   );
 };

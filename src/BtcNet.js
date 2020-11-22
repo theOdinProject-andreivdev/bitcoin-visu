@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const BtcNet = () => {
+  console.log("conn");
   let ws = new WebSocket("wss://ws.blockchain.info/inv");
 
   const waitForOpenConnection = () => {
