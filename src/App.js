@@ -5,10 +5,12 @@ import { Canvas } from "react-three-fiber";
 import React, { useState, useEffect, useRef } from "react";
 import TxUI from "./TxUI";
 import * as THREE from "three";
+import { cleanup } from "@testing-library/react";
 
 const App = () => {
-  const [transactions, setTransactions] = useState(new Map());
-  const [blocks, setBlocks] = useState(new Map());
+  const [transactions, setTransactions] = useState([]);
+  const [txListInBlocks, setTxListInBlocks] = useState([]);
+  const [blocks, setBlocks] = useState([]);
   const [transactionsInBlocks, setTransactionsInBlocks] = useState(0);
   const [btcnet, setBtcNet] = useState();
 
@@ -45,46 +47,79 @@ const App = () => {
   };
 
   const onNewBlock = (hash) => {
-    const timesReported = blocks.get(hash);
-    if (timesReported > 0) {
-      setBlocks((prev) => new Map([...prev, [hash, timesReported + 1]]));
-      return;
-    }
+    var audio = new Audio(
+      "http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/bonus.wav"
+    );
+    audio.play();
 
-    if (blocks.size > 5) setBlocks(new Map());
+    if (blocks.size > 5) setBlocks([]);
 
-    setBlocks((prev) => new Map([...prev, [hash, 1]]));
+    setBlocks([...blocks, { hash }]);
     setTimeout(function () {
       btcnet.getTxForBlock(hash, onBlockTXsReceived);
     }, 3000);
   };
 
   const onNewTx = (hash) => {
-    const timesReported = transactions.get(hash);
-    if (timesReported > 0) {
-      setTransactions((prev) => new Map([...prev, [hash, timesReported + 1]]));
-      return;
-    }
-    setTransactions((prev) => new Map([...prev, [hash, 1]]));
+    var audio = new Audio(
+      "https://commondatastorage.googleapis.com/codeskulptor-assets/week7-brrring.m4a"
+    );
+    audio.play();
+
+    let double = false;
+    transactions.forEach((tr) => {
+      if (tr.hash === hash) {
+        double = true;
+      }
+    });
+    if (double === false)
+      setTransactions((current) => [...current, { hash: hash, value: 1 }]);
   };
 
   const onBlockTXsReceived = (txsInBlock) => {
-    console.log("Size before block: " + transactions.size);
-    txsInBlock.forEach((txInBlock) => {
-      if (transactions.has(txInBlock.hash)) {
-        setTransactions((prev) => new Map([...prev, [txInBlock.hash, 0]]));
-        setTransactionsInBlocks(transactionsInBlocks + 1);
-      }
-    });
-    console.log("Size after block: " + transactions.size);
+    setTxListInBlocks(txsInBlock);
   };
 
-  let txList = [];
+  useEffect(() => {
+    console.log("effect");
+    if (txListInBlocks.length === 0) return;
+    let tmptxinblocks = 0;
+    console.log("transactions");
+    console.log(transactions);
+    let tmptransaction = transactions.map((t) => Object.assign({}, t));
+    console.log("tmp transactions");
+    console.log(tmptransaction);
+    txListInBlocks.forEach((txInBlock) => {
+      tmptransaction.forEach((tx) => {
+        if (txInBlock.hash === tx.hash) {
+          tx.value = 0;
+          tmptxinblocks++;
+        }
+      });
+    });
+
+    console.log("tmp transactions 2");
+    console.log(tmptransaction);
+    setTxListInBlocks([]);
+    setTransactions(tmptransaction);
+    setTransactionsInBlocks(transactionsInBlocks + tmptxinblocks);
+
+    setTimeout(function () {
+      let tmptransaction = transactions.map((t) => Object.assign({}, t));
+      console.log("tmp transactions");
+      console.log(tmptransaction);
+      for (let i = tmptransaction.length - 1; i >= 0; i--) {
+        if (tmptransaction[i].value == 0) {
+          tmptransaction.splice(i, 1);
+        }
+      }
+
+      setTransactions(tmptransaction);
+    }, 5000);
+  }, [transactions]);
+
   let blockList = [];
 
-  transactions.forEach((transaction) => {
-    txList.push(transaction);
-  });
   let blockNr = 0;
 
   blocks.forEach(() => {
@@ -98,7 +133,7 @@ const App = () => {
       <div style={{ display: "grid", height: "100%" }}>
         <div className="card">
           <div className="card-body">
-            Pending transactions: {transactions.size}
+            Pending transactions: {transactions.length}
           </div>
           <div className="card-body">
             Transactions in blocks: {transactionsInBlocks}
@@ -108,15 +143,18 @@ const App = () => {
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
 
-          {txList.map((tx) => (
-            <TxUI
-              value={tx}
-              width={cnv.offsetWidth}
-              height={cnv.offsetHeight}
-              geo={geo}
-              mat={mat}
-            />
-          ))}
+          {transactions.map((tr) => {
+            return (
+              <TxUI
+                key={tr.hash}
+                value={tr.value}
+                width={cnv.offsetWidth}
+                height={cnv.offsetHeight}
+                geo={geo}
+                mat={mat}
+              />
+            );
+          })}
 
           {blockList.map((blockNr) => (
             <BlockUI
