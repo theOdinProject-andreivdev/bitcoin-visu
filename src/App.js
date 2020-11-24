@@ -104,6 +104,7 @@ const App = () => {
     setTransactions(tmptransaction);
     setTransactionsInBlocks(transactionsInBlocks + tmptxinblocks);
 
+    //cleanup
     setTimeout(function () {
       let tmptransaction = transactions.map((t) => Object.assign({}, t));
       console.log("tmp transactions");
@@ -115,7 +116,7 @@ const App = () => {
       }
 
       setTransactions(tmptransaction);
-    }, 5000);
+    }, 30000);
   }, [transactions]);
 
   let blockList = [];
@@ -130,16 +131,40 @@ const App = () => {
 
   return (
     <div className="App">
-      <div style={{ display: "grid", height: "100%" }}>
-        <div className="card">
-          <div className="card-body">
-            Pending transactions: {transactions.length}
-          </div>
-          <div className="card-body">
-            Transactions in blocks: {transactionsInBlocks}
-          </div>
+      <div
+        style={{
+          display: "grid",
+          height: "100%",
+          gridTemplateRows: "repeat(3,auto)",
+          gridTemplateColumns: "repeat(2,auto)",
+        }}
+      >
+        <div
+          className="card-body font-weight-lighter "
+          style={{ gridColumn: "1", gridRow: "1 / span 1" }}
+        >
+          <h6>
+            bitcoin-visu is a tool for live visualization of the bitcoin network
+            transactions.
+            <br />
+            Every pink dot represents a transaction on the blockchain.
+            <br />
+            Transactions wait on screen until they are confirmed in mined
+            blocks. Once a block appears and a transaction is confirmed, it
+            leaves the screen.
+          </h6>
         </div>
-        <Canvas className="canvas" camera={{ fov: 50, position: [0, 0, 200] }}>
+        <div className="card-body" style={{ gridColumn: "2", gridRow: "1" }}>
+          Pending transactions: {transactions.length}
+        </div>
+        <div className="card-body" style={{ gridColumn: "2", gridRow: "2" }}>
+          Transactions in blocks: {transactionsInBlocks}
+        </div>
+        <Canvas
+          className="canvas"
+          camera={{ fov: 50, position: [0, 0, 200] }}
+          style={{ gridColumn: "1 / span 1", gridRow: "3" }}
+        >
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
 

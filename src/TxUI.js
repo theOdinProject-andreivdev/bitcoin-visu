@@ -7,6 +7,7 @@ const TxUI = (props) => {
   const [posy, setPosy] = useState(
     Math.random() * (props.height * 0.1) - (props.height * 0.1) / 2
   );
+  const [posz, setPosz] = useState(-200);
   const [rotating, setRotating] = useState(false);
   const [rotatingXLimit, setRotatingXLimit] = useState(
     randomNumber(0.035, 0.055)
@@ -16,11 +17,15 @@ const TxUI = (props) => {
   let t = 0.002;
   useFrame(() => {
     if (mesh.current == null) return;
+    if (mesh.current.position.z < 0)
+      mesh.current.position.z = mesh.current.position.z + 0.1;
     if (props.value == 0) {
       mesh.current.position.x =
         mesh.current.position.x + randomNumber(0.1, 0.2);
       mesh.current.position.y =
         mesh.current.position.y + randomNumber(0.1, 0.2);
+
+      mesh.current.position.z = mesh.current.position.z + 0.25;
     } else {
       if (mesh.current.position.x > props.width * rotatingXLimit || rotating) {
         setRotating(true);
@@ -45,7 +50,7 @@ const TxUI = (props) => {
   return (
     <mesh
       ref={mesh}
-      position={[posx, posy, 0]}
+      position={[posx, posy, posz]}
       rotation={[0, 0, 0]}
       scale={[1, 1, 1]}
       geometry={props.geo}
