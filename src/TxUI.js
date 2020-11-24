@@ -1,4 +1,3 @@
-import { random } from "lodash";
 import React, { useRef, useState } from "react";
 import { useFrame } from "react-three-fiber";
 
@@ -16,10 +15,10 @@ const TxUI = (props) => {
 
   let t = 0.002;
   useFrame(() => {
-    if (mesh.current == null) return;
+    if (mesh.current === null) return;
     if (mesh.current.position.z < 0)
       mesh.current.position.z = mesh.current.position.z + 0.1;
-    if (props.value == 0) {
+    if (props.value === 0) {
       mesh.current.position.x =
         mesh.current.position.x + randomNumber(0.1, 0.2);
       mesh.current.position.y =

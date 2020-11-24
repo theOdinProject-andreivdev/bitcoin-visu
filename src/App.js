@@ -5,7 +5,6 @@ import { Canvas } from "react-three-fiber";
 import React, { useState, useEffect, useRef } from "react";
 import TxUI from "./TxUI";
 import * as THREE from "three";
-import { cleanup } from "@testing-library/react";
 
 const App = () => {
   const [transactions, setTransactions] = useState([]);
@@ -110,7 +109,7 @@ const App = () => {
       console.log("tmp transactions");
       console.log(tmptransaction);
       for (let i = tmptransaction.length - 1; i >= 0; i--) {
-        if (tmptransaction[i].value == 0) {
+        if (tmptransaction[i].value === 0) {
           tmptransaction.splice(i, 1);
         }
       }
@@ -140,21 +139,19 @@ const App = () => {
         }}
       >
         <div
-          className="card-body font-weight-lighter "
-          style={{ gridColumn: "1", gridRow: "1 / span 2" }}
+          className="card-body "
+          style={{ gridColumn: "1", gridRow: "1 / span 2", fontSize: "0.75em" }}
         >
-          <h6>
-            bitcoin-visu is a tool for live visualization of the bitcoin network
-            transactions.
-            <br />
-            Every pink dot represents a transaction on the blockchain.
-            <br />
-            Transactions wait on screen until they are confirmed in mined
-            blocks. Once a block appears and a transaction is confirmed, it
-            leaves the screen.
-            <br />
-            Best seen on desktop :)
-          </h6>
+          bitcoin-visu is a tool for live visualization of the bitcoin network
+          transactions.
+          <br />
+          Every pink dot represents a transaction on the blockchain.
+          <br />
+          Transactions wait on screen until they are confirmed in mined blocks.
+          Once a block appears and a transaction is confirmed, it leaves the
+          screen.
+          <br />
+          Best seen on desktop :)
         </div>
         <div className="card-body" style={{ gridColumn: "2", gridRow: "1" }}>
           Pending transactions: {transactions.length}
