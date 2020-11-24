@@ -141,7 +141,7 @@ const App = () => {
       >
         <div
           className="card-body font-weight-lighter "
-          style={{ gridColumn: "1", gridRow: "1 / span 1" }}
+          style={{ gridColumn: "1", gridRow: "1 / span 2" }}
         >
           <h6>
             bitcoin-visu is a tool for live visualization of the bitcoin network
@@ -152,6 +152,8 @@ const App = () => {
             Transactions wait on screen until they are confirmed in mined
             blocks. Once a block appears and a transaction is confirmed, it
             leaves the screen.
+            <br />
+            Best seen on desktop :)
           </h6>
         </div>
         <div className="card-body" style={{ gridColumn: "2", gridRow: "1" }}>
@@ -163,7 +165,7 @@ const App = () => {
         <Canvas
           className="canvas"
           camera={{ fov: 50, position: [0, 0, 200] }}
-          style={{ gridColumn: "1 / span 1", gridRow: "3" }}
+          style={{ gridColumn: "1 / span 2", gridRow: "3" }}
         >
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
